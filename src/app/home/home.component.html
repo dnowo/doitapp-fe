@@ -1,0 +1,237 @@
+<div *ngIf="!isLogged">
+  <h3 class="font-gothic">You have to be logged in to see your jobs!</h3>
+</div>
+<div class="container" *ngIf="isLogged">
+  <table class="font-gothic">
+    <caption>
+      <h2>List of your jobs</h2>
+    </caption>
+    <thead>
+    <tr>
+      <th>Options</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Deadline</th>
+      <th>Priority</th>
+      <th>Repeatable</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="dropdown" dropdown (load)="getJobs(pageNumber)"
+        *ngFor="let j of allJobs$ | async">
+      <td style="width: 10%;">
+        <div class="btn-group dropdown button-drop" dropdown>
+          <button dropdownToggle role="button" type="button" class="btn btn-default dropdown-toggle"
+                  data-toggle="dropdown">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul *dropdownMenu class="dropdown-menu" role="menu">
+            <li><a [ngClass]="j.ended ? 'isDisabled' : 'null'" (click)="j.ended ? openErrDialog() : onSelect(j)">Edit
+              this job</a></li>
+            <li><a [ngClass]="j.ended ? 'isDisabled' : 'null'" (click)="j.ended ? openErrDialog() : finishJob(j)">Finish
+              this job</a></li>
+            <li class="divider"></li>
+            <li><a (click)="offRepeatable(j)">Repeat:  {{ j.repeatable ? 'No' : 'Yes' }}</a></li>
+            <li><a (click)="deleteJob(j)">Delete this job</a></li>
+          </ul>
+        </div>
+      </td>
+      <td style="width: 15%;" [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.title }}</td>
+      <td style="width: 40%;" [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.description }}</td>
+      <td style="width: 15%;"
+          [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.deadline | slice: 0 : 16 | split:"T"}}</td>
+      <td style="width: 10%;"
+        [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.priority === 1 ? 'High' : (j.priority === 2 ? 'Medium' : (j.priority === 3 ? 'Low' : 'None'))}}</td>
+      <td style="width: 10%;"
+        [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.repeatable ? 'Yes' : 'No'}}</td>
+
+    </tr>
+    </tbody>
+  </table>
+
+  <section id="pagination">
+      <div class="rowek">
+        <div class="dziecko">
+          <button (click)="goPrevPage(); getJobs(pageNumber)" style="margin-bottom: 1%" mat-mini-fab color="">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+        </div>
+        <div class="dziecko" style="margin-top: 1%;">
+          <span class="font-gothic"> Page: {{pageNumber}} </span>
+        </div>
+        <div class="dziecko">
+          <button (click)="goNextPage(); getJobs(pageNumber)" style="margin-left: 1%; margin-bottom:1%" mat-mini-fab
+                  color="">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+      </div>
+  </section>
+</div>
+
+
+
+<section id="editPanel">
+  <div *ngIf="selectedJob" [@slideInOut] class="container">
+    <h3 class="font-gothic">Edit your job</h3>
+    <form autocomplete="on" [formGroup]="form" (ngSubmit)="editJob(selectedJob.id)">
+      <div class="form-row">
+        <div class="form-group">
+          <div class="col-md-5 mb-5">
+            <mat-form-field style="width:100%" appearance="fill">
+              <mat-label>Title</mat-label>
+              <input matInput type="text"
+                     formControlName="title"
+                     name="given-title"
+                     autocomplete="given-title"
+                     [(ngModel)]="selectedJob.title">
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-4 mb-5">
+            <mat-form-field style="width:100%" appearance="fill" class="full-width">
+              <mat-label>Deadline</mat-label>
+              <input matInput [ngxMatDatetimePicker]="picker" formControlName="deadline" placeholder="Choose a date"
+                     [(ngModel)]="selectedJob.deadline">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <ngx-mat-datetime-picker #picker>
+              </ngx-mat-datetime-picker>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-3 mb-5">
+            <mat-form-field style="width:100%" appearance="fill">
+              <mat-label>Priority</mat-label>
+              <mat-select [(ngModel)]="selectedJob.priority" formControlName="priority">
+                <mat-option value="1">High</mat-option>
+                <mat-option value="2">Medium</mat-option>
+                <mat-option value="3">Low</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col-md-12 mb-10">
+            <mat-form-field style="width:100%" appearance="fill">
+              <mat-label>Description</mat-label>
+              <textarea style="color: black;" formControlName="description" matInput
+                        [(ngModel)]="selectedJob.description"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col-md-12">
+            <mat-checkbox
+              formControlName="repeatable"
+              class="form-check-input text-white font-gothic"
+              type="checkbox"
+              id="repeatableCheck">
+              Repeatable
+            </mat-checkbox>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-5 mb-5">
+              <button mat-raised-button [disabled]="!form.valid" color="accent" type="submit" style="width:100%">Submit
+                me!
+              </button>
+            </div>
+            <div class="col-md-5 mb-5">
+              <button mat-raised-button color="accent" (click)="jobToAdd=null;" style="width:100%">Hide</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</section>
+
+<section id="addPanel">
+  <button (click)="onAdd()"
+          *ngIf="isLogged"
+          class="float"
+          mat-fab aria-label="Add a new job">
+    <mat-icon>add</mat-icon>
+  </button>
+
+  <div *ngIf="jobToAdd" [@slideInOut] class="container">
+    <h3 class="font-gothic">Add a new job</h3>
+    <form autocomplete="on" [formGroup]="form" (ngSubmit)="addJob()">
+      <div class="form-row">
+        <div class="form-group">
+          <div class="col-md-5 mb-5">
+            <mat-form-field style="width:100%" appearance="fill">
+              <mat-label>Title</mat-label>
+              <input matInput type="text"
+                     formControlName="title"
+                     name="given-title"
+                     autocomplete="given-title">
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-4 mb-5">
+            <mat-form-field style="width:100%" appearance="fill" class="full-width">
+              <mat-label>Date</mat-label>
+              <input matInput [ngxMatDatetimePicker]="picker" formControlName="deadline" placeholder="Choose a date">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <ngx-mat-datetime-picker #picker>
+              </ngx-mat-datetime-picker>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-3 mb-5">
+            <mat-form-field style="width:100%" appearance="fill">
+              <mat-label>Priority</mat-label>
+              <mat-select formControlName="priority">
+                <mat-option value="1">High</mat-option>
+                <mat-option value="2">Medium</mat-option>
+                <mat-option value="3">Low</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col-md-12 mb-10">
+            <mat-form-field style="width:100%" appearance="fill">
+              <mat-label>Description</mat-label>
+              <textarea style="color: black;" formControlName="description" matInput></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col-md-12">
+            <mat-checkbox
+              formControlName="repeatable"
+              class="form-check-input text-white font-gothic"
+              type="checkbox"
+              id="repeatableCheckAdd">
+              Repeatable
+            </mat-checkbox>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col-md-5 mb-5">
+            <button mat-raised-button
+                    [disabled]="!form.valid"
+                    color="accent"
+                    type="submit"
+                    style="width:100%">
+              Submit me!
+            </button>
+          </div>
+          <div class="col-md-5 mb-5">
+            <button mat-raised-button color="accent" (click)="jobToAdd=null;" style="width:100%">Hide</button>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</section>

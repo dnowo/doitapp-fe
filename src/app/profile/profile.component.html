@@ -1,0 +1,37 @@
+<div class="container">
+  <!-- User logged -->
+  <section class="colored-profile-info" *ngIf="isLogged; else loggedOut" >
+    <div class="row center">
+      <div class="col-lg-3 text">
+        <h3>Username:</h3>
+        <h1>{{user.username}}</h1>
+      </div>
+
+      <div class="col-lg-7 text">
+        <h3>Email:</h3>
+        <h1>{{user.email}}</h1>
+      </div>
+    </div>
+    <div class="row center">
+      <div class="col-lg-3 center-all text">
+        <h3 class="text">Your session will expire at <b>{{ date.toString() | slice:0:25 }}</b></h3>
+      </div>
+      <div class="col-lg-3">
+        <h1></h1>
+        <button mat-fab
+                color="warn"
+                aria-label="Logout form service."
+                (click)="logout()">
+          <mat-icon>power_settings_new</mat-icon>
+        </button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- User not logged -->
+  <ng-template class="white" #loggedOut>
+    <h1 class="center-all font-gothic text">Please login first.</h1>
+  </ng-template>
+</div>
+

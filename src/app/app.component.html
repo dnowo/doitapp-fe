@@ -1,0 +1,63 @@
+<header>
+  <div class="container">
+
+      <div class="rowek">
+        <div class="dziecko">
+          <a id="home" class="hoverable" href="/home">
+            <button mat-fab
+                    color="primary"
+                    aria-label="Navigate to home"
+                    data-toggle="tooltip" data-placement="bottom" title="To-do list">
+              <mat-icon>rule</mat-icon>
+            </button>
+          </a>
+        </div>
+
+        <div class="dziecko" *ngIf="userLogged">
+          <a id="profile" class="hoverable" href="/profile">
+            <button mat-fab
+                    color="primary"
+                    aria-label="Navigate to profile"
+                    data-toggle="tooltip" data-placement="bottom" title="Profile">
+              <mat-icon>face</mat-icon>
+            </button>
+          </a>
+        </div>
+
+        <div class="dziecko" *ngIf="!userLogged">
+          <a id="login" class="hoverable" href="/login">
+            <button mat-fab
+                    color="primary"
+                    aria-label="Navigate to login panel"
+                    data-toggle="tooltip" data-placement="bottom" title="Login">
+              <mat-icon>login</mat-icon>
+            </button>
+          </a>
+        </div>
+
+        <div class="dziecko" *ngIf="!userLogged">
+          <a id="register" class="hoverable" href="/register">
+            <button mat-fab
+                    color="primary"
+                    aria-label="Navigate to registration"
+                    data-toggle="tooltip" data-placement="bottom" title="Register new account">
+              <mat-icon>how_to_reg</mat-icon>
+            </button>
+          </a>
+        </div>
+      </div>
+
+  </div>
+
+</header>
+
+<main>
+    <router-outlet></router-outlet>
+</main>
+
+<footer>
+  <app-cfooter></app-cfooter>
+</footer>
+
+
+

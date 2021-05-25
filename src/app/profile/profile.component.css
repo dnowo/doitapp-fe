@@ -1,0 +1,21 @@
+h { color: white }
+.center-all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.center {
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+.text {
+  color: white;
+  word-wrap: break-word;
+}
+.colored-profile-info {
+  background: rgba(63, 63, 64, 0.7);
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+}
