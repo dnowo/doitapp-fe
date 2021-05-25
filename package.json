@@ -8,7 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "heroku-postbuild": "ng build --prod"
+    "heroku-postbuild": "ng build --prod --aot",
+	"postinstall": "ng build --prod --aot"
   },
   "engines": {
     "node": "14.16.1",
@@ -39,7 +40,10 @@
     "tslib": "^2.0.0",
     "typescript": "~3.9.5",
     "url-polyfill": "^1.1.10",
-    "zone.js": "~0.10.3"
+    "zone.js": "~0.10.3",
+	"@angular/cli": "~10.0.6",
+	"typescript": "~3.9.5",
+	"@angular/compiler-cli": "~10.0.9"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1000.6",
