@@ -1,5 +1,5 @@
 import {Component, OnInit, Pipe, PipeTransform} from '@angular/core';
-import {Job} from '../_service/user.service';
+import {Job, JobPages} from '../_service/user.service';
 import {interval, Observable} from 'rxjs';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../_service/user.service';
@@ -28,10 +28,13 @@ export class HomeComponent implements OnInit {
   selectedJob: Job = null;
   jobToAdd: Job = null;
   allJobs$: Observable<Job[]>;
-  pageNumber = 0;
+  allPagedJobs$: Observable<JobPages>;
   oneJob: any;
   maxPage: number;
+  currentPage = 0;
+  totalItems: number;
   isLogged: boolean;
+  jobs=[];
 
 
   form = new FormGroup({
@@ -70,28 +73,40 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getJobs(this.pageNumber);
+    this.currentPage = 0;
+    this.getJobs(this.currentPage);
   }
 
   getJobs(page: number): void {
-    this.allJobs$ = this.userService.getAllJobs(page);
+    this.allPagedJobs$ = this.userService.getAllJobs(this.currentPage);
+
+    var subs = this.allPagedJobs$.subscribe(jobPaged => {
+      this.maxPage = jobPaged.totalPages;
+      this.currentPage = jobPaged.currentPage;
+      this.totalItems = jobPaged.totalItems;
+      this.jobs = jobPaged.jobs;
+    });
   }
 
   goNextPage(): void {
-    this.maxPage = this.userService.jobs.length / 6;
-    if (this.pageNumber <= this.maxPage ) {
-      this.pageNumber++;
+    if (this.currentPage <= this.maxPage) {
+      this.currentPage++;
     }
   }
 
   goPrevPage(): void {
-    if (this.pageNumber === 0) { return; }
-    if (this.pageNumber > 0) { this.pageNumber--; }
+    if (this.currentPage === 0) { return; }
+    if (this.currentPage > 0) {
+      this.currentPage--;
+    }
   }
 
   addJob(): void {
     this.jobAddEdit = this.readForm();
-    this.userService.addJob(this.jobAddEdit).subscribe(jobs => console.log(jobs));
+    this.userService.addJob(this.jobAddEdit).subscribe(jobs => {
+      console.log(jobs)
+      this.jobs.push(jobs);
+    });
     this.jobAddEdit = null;
     this.jobToAdd = null;
   }

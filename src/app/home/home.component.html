@@ -18,7 +18,7 @@
     </thead>
     <tbody>
     <tr class="dropdown" dropdown (load)="getJobs(pageNumber)"
-        *ngFor="let j of allJobs$ | async">
+        *ngFor="let j of jobs">
       <td style="width: 10%;">
         <div class="btn-group dropdown button-drop" dropdown>
           <button dropdownToggle role="button" type="button" class="btn btn-default dropdown-toggle"
@@ -53,15 +53,15 @@
   <section id="pagination">
       <div class="rowek">
         <div class="dziecko">
-          <button (click)="goPrevPage(); getJobs(pageNumber)" style="margin-bottom: 1%" mat-mini-fab color="">
+          <button (click)="goPrevPage(); getJobs(currentPage)" style="margin-bottom: 1%" mat-mini-fab color="">
             <mat-icon>chevron_left</mat-icon>
           </button>
         </div>
         <div class="dziecko" style="margin-top: 1%;">
-          <span class="font-gothic"> Page: {{pageNumber}} </span>
+          <span class="font-gothic"> Page: {{currentPage}} </span>
         </div>
         <div class="dziecko">
-          <button (click)="goNextPage(); getJobs(pageNumber)" style="margin-left: 1%; margin-bottom:1%" mat-mini-fab
+          <button (click)="goNextPage(); getJobs(currentPage)" style="margin-left: 1%; margin-bottom:1%" mat-mini-fab
                   color="">
             <mat-icon>chevron_right</mat-icon>
           </button>

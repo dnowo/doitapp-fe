@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 
-const API = 'https://doitapp-be.herokuapp.com/';
+const API = 'http://localhost:8080/';
 
 @Injectable({
   providedIn: 'root'
@@ -10,28 +10,48 @@ const API = 'https://doitapp-be.herokuapp.com/';
 export class UserService {
   private jobSubject = new BehaviorSubject<Job[]>([]);
   jobObservable$ = this.jobSubject.asObservable();
+
+  private jobPageSubject = new BehaviorSubject<JobPages>({});
+  jobPageObservable$ = this.jobPageSubject.asObservable();
+  jobsCurrentPage = 0;
+  jobsTotalItems;
+  jobsTotalPages;
+  jobsPaged = [];
   jobs = [];
   jobsUnsorted = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.jobsCurrentPage = 0;
+  }
 
-  getAllJobs(page: number): Observable<Job[]> {
-    this.http.get<Job[]>(API + 'api/job/all' + '?page=' + page).subscribe(j => {
-      if (j.length > 0){
-        this.jobs = j;
-        this.jobSubject.next(j);
+  getAllJobs(page: number): Observable<JobPages> {
+    if (page === undefined) {
+      page = 0;
+    }
+
+    this.http.get<JobPages>(API + 'api/job/all' + '?page=' + page).subscribe(j => {
+      if (j.jobs.length > 0){
+        this.jobs = j.jobs;
+        this.jobsPaged = j.jobs;
+        this.jobPageSubject.next(j);
+        this.jobsCurrentPage = j.currentPage;
+        this.jobsTotalItems = j.totalItems;
+        this.jobsTotalPages = j.totalPages;
       }
+      console.log(j);
     }, error => {
       console.log(error);
     });
-    return this.jobObservable$;
+
+    return this.jobPageObservable$;
   }
 
   public addJob(job: Job): Observable<Job> {
     // @ts-ignore
     job.deadline = this.convert(job.deadline);
-    this.jobs.push(job);
+    // this.jobs.push(job);
     this.jobSubject.next(this.jobs);
+
     return this.http.post<Job>(API + 'api/job/add', job);
   }
 
@@ -94,6 +114,13 @@ export interface Job {
   deadline: Date;
   repeatable: boolean;
   ended: boolean;
+}
+
+export interface JobPages {
+  jobs?: any;
+  totalItems?: number;
+  currentPage?: number;
+  totalPages?: number;
 }
 
 export interface User {

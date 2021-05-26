@@ -41,11 +41,11 @@ th {
 
 @media only screen and (max-width: 728px) {
   th {
-    font-size: 50%;
+    font-size: 80%;
     font-weight: 100;
   }
   table {
-    font-size: 50%;
+    font-size: 80%;
   }
 
 }
