@@ -93,8 +93,9 @@ export class UserService {
     const date = new Date(str),
       mnth = ('0' + (date.getMonth() + 1)).slice(-2),
       day = ('0' + date.getDate()).slice(-2),
-      hour = date.getHours();
-    const mins = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+      hour = (date.getHours() < 10 ? '0' : '') + date.getHours();
+      const mins = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+
     const secs = (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
     return [date.getFullYear(), mnth, day].join('-') + 'T' + [hour, mins, secs].join(':');
   }
