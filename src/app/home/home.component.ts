@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
   currentPage = 0;
   totalItems: number;
   isLogged: boolean;
-  jobs=[];
+  jobs: any[];
 
 
   form = new FormGroup({
@@ -104,7 +104,10 @@ export class HomeComponent implements OnInit {
   addJob(): void {
     this.jobAddEdit = this.readForm();
     this.userService.addJob(this.jobAddEdit).subscribe(jobs => {
-      console.log(jobs)
+      console.log(this.jobs);
+      if (this.jobs === undefined) {
+        this.jobs = [];
+      }
       this.jobs.push(jobs);
     });
     this.jobAddEdit = null;
