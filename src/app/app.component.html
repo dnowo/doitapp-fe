@@ -3,7 +3,7 @@
 
       <div class="rowek">
         <div class="dziecko">
-          <a id="home" class="hoverable" href="/home">
+          <a id="home" class="hoverable" routerLink="/home">
             <button mat-fab
                     color="primary"
                     aria-label="Navigate to home"
@@ -14,7 +14,7 @@
         </div>
 
         <div class="dziecko" *ngIf="userLogged">
-          <a id="profile" class="hoverable" href="/profile">
+          <a id="profile" class="hoverable" routerLink="/profile">
             <button mat-fab
                     color="primary"
                     aria-label="Navigate to profile"
@@ -25,7 +25,7 @@
         </div>
 
         <div class="dziecko" *ngIf="!userLogged">
-          <a id="login" class="hoverable" href="/login">
+          <a id="login" class="hoverable" routerLink="/login">
             <button mat-fab
                     color="primary"
                     aria-label="Navigate to login panel"
@@ -36,7 +36,7 @@
         </div>
 
         <div class="dziecko" *ngIf="!userLogged">
-          <a id="register" class="hoverable" href="/register">
+          <a id="register" class="hoverable" routerLink="/register">
             <button mat-fab
                     color="primary"
                     aria-label="Navigate to registration"
