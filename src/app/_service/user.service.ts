@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 
-const API = 'https://doitapp-be.herokuapp.com/';
+const API = 'http://localhost:8080/';
 
 @Injectable({
   providedIn: 'root'

@@ -18,6 +18,7 @@ import {TokenService} from '../_service/token.service';
         animate('300ms ease-in', style({transform: 'translateY(30%)'}))
       ]),
       transition(':leave', [
+        style({transform: 'translateY(50%)'}),
         animate('150ms ease-in', style({transform: 'translateY(-50%)'}))
       ])
     ])
