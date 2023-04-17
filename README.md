@@ -44,7 +44,7 @@ Option panel for single job.
 
 Edit and add form, looks the same.
 
-![Form edit/add](./images/form.png)
+![Form edit/add](https://github.com/dnowo/doitapp-be/blob/master/images/form.png)
 
 Profile page.
 
