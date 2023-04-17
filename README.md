@@ -36,11 +36,11 @@ Do it app project uses:
 
 Main page with all jobs.
 
-![Homepage](./images/home.png)
+![Homepage](https://github.com/dnowo/doitapp-be/blob/master/images/home.png)
 
 Option panel for single job.
 
-![Options panel](./images/option.png)
+![Options panel](https://github.com/dnowo/doitapp-be/blob/master/images/option.png)
 
 Edit and add form, looks the same.
 
@@ -48,15 +48,15 @@ Edit and add form, looks the same.
 
 Profile page.
 
-![Profile](./images/profile.png)
+![Profile](https://github.com/dnowo/doitapp-be/blob/master/images/profile.png)
 
 Login panel
 
-![Login panel](./images/login.png)
+![Login panel](https://github.com/dnowo/doitapp-be/blob/master/images/login.png)
 
 Register panel
 
-![Register panel](./images/register.png)
+![Register panel](https://github.com/dnowo/doitapp-be/blob/master/images/register.png)
 
 
 
